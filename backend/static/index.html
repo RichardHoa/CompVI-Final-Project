@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physiognomy Analysis System</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Physiognomy Analysis</h1>
+        <p>Upload a facial image to discover your personal traits.</p>
+        
+        <div class="upload-section">
+            <input type="file" id="imageInput" accept="image/*">
+            <button id="analyzeBtn">Analyze Image</button>
+        </div>
+
+        <div id="loading" class="hidden">
+            <p>Processing image through the pipeline...</p>
+        </div>
+
+        <div id="results" class="hidden">
+            <h2>Analysis Results</h2>
+            
+            <div class="features-section">
+                <h3>Extracted Features</h3>
+                <ul id="featuresList"></ul>
+            </div>
+            
+            <div class="interpretation-section">
+                <h3>Interpretations</h3>
+                <ul id="interpretationList"></ul>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/static/script.js"></script>
+</body>
+</html>
