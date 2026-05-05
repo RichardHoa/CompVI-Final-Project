@@ -2,6 +2,7 @@ const loadingDiv = document.getElementById('loading');
 const resultsDiv = document.getElementById('results');
 const featuresList = document.getElementById('featuresList');
 const interpretationList = document.getElementById('interpretationList');
+const visualizedImage = document.getElementById('visualizedImage');
 
 const video = document.getElementById('webcamVideo');
 const canvas = document.getElementById('webcamCanvas');
@@ -80,6 +81,11 @@ async function sendToAnalyze(formData) {
                 }
             };
             if(actualData.features) renderFeatures(actualData.features);
+            
+            // Render visualization image with cache-busting
+            if(actualData.visualization_url) {
+                visualizedImage.src = actualData.visualization_url + '?t=' + new Date().getTime();
+            }
 
             // Render interpretations (nested array)
             if(actualData.interpretation) {

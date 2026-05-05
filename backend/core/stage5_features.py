@@ -13,48 +13,18 @@ def extract_features(extracted_data):
     
     face_img, face_gray, face_edge, face_coords = extracted_data["face"]
     
-    # ---------------------------
-    # Face Features
-    # ---------------------------
-    contours,_ = cv2.findContours(face_edge, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    # Face length: 10 (top) to 152 (chin)
+    face_len = math.hypot(pt(10)[0] - pt(152)[0], pt(10)[1] - pt(152)[1])
     
-    face_len = face_img.shape[0]
-    forehead_w = face_img.shape[1] * 0.8
-    cheek_w = face_img.shape[1]
-    jaw_w = face_img.shape[1] * 0.75
+    # Forehead width: 103 to 332
+    forehead_w = math.hypot(pt(103)[0] - pt(332)[0], pt(103)[1] - pt(332)[1])
     
-    if len(contours) > 0:
-        valid=[]
-        center_x = face_img.shape[1] / 2
-        for c in contours:
-            area = cv2.contourArea(c)
-            if area < 500: continue
-            x,y,wc,hc = cv2.boundingRect(c)
-            cx = x + wc/2
-            if abs(cx - center_x) < face_img.shape[1]*0.35:
-                valid.append(c)
-                
-        largest = max(valid, key=cv2.contourArea) if valid else max(contours, key=cv2.contourArea)
-        x,y,wc,hc = cv2.boundingRect(largest)
-        face_len = hc
-        
-        def width_at_ratio(r):
-            yy = int(y + hc*r)
-            xs=[]
-            for p in largest:
-                px,py = p[0]
-                if abs(py-yy) < 4: xs.append(px)
-            if len(xs) < 2: return 0
-            return max(xs)-min(xs)
-            
-        fw = width_at_ratio(0.20)
-        cw = width_at_ratio(0.45)
-        jw = width_at_ratio(0.78)
-        
-        if fw != 0: forehead_w = fw
-        if cw != 0: cheek_w = cw
-        if jw != 0: jaw_w = jw
-        
+    # Cheek width: 234 to 454
+    cheek_w = math.hypot(pt(234)[0] - pt(454)[0], pt(234)[1] - pt(454)[1])
+    
+    # Jaw width: 132 to 361
+    jaw_w = math.hypot(pt(132)[0] - pt(361)[0], pt(132)[1] - pt(361)[1])
+    
     L = float(face_len / cheek_w) if cheek_w > 0 else 0.0
     J = float(jaw_w / cheek_w) if cheek_w > 0 else 0.0
     F = float(forehead_w / cheek_w) if cheek_w > 0 else 0.0

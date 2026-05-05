@@ -51,10 +51,10 @@ def detect_landmarks(processed_frame, face_landmarks):
         0,37,39,40,185,267,269,270,409
     ]
     
-    face_crops = crop_from_points(FACE_POINTS, pad=35)
-    left_eye_crops = crop_from_points(LEFT_EYE, pad=15)
-    right_eye_crops = crop_from_points(RIGHT_EYE, pad=15)
-    lip_crops = crop_from_points(LIPS, pad=20)
+    face_crops = crop_from_points(FACE_POINTS, pad=15)
+    left_eye_crops = crop_from_points(LEFT_EYE, pad=5)
+    right_eye_crops = crop_from_points(RIGHT_EYE, pad=5)
+    lip_crops = crop_from_points(LIPS, pad=10)
     
     extraction_dir = os.path.join("Photo", "extraction")
     os.makedirs(extraction_dir, exist_ok=True)

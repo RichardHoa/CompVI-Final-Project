@@ -33,13 +33,14 @@ def process_image(image_path: str) -> dict:
     # Stage 6: Rule-based Feature Interpretation
     interpretation = interpret_features(features)
 
-    # Stage 7: Visualization (optional, for debugging or returning an overlay image)
-    # visualize_results(processed_frame, face_roi, landmarks)
+    # Stage 7: Visualization
+    visualization_url = visualize_results(processed_frame, extracted_data, features)
 
     # Compile the final result
     result = {
         "features": features,
-        "interpretation": interpretation
+        "interpretation": interpretation,
+        "visualization_url": visualization_url
     }
     
     return result
