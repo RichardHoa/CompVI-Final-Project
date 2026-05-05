@@ -1,16 +1,23 @@
 import cv2
+import os
 
 def acquire_image(source_path: str):
     """
     Stage 1: Input Acquisition
-    Reads an image from a file path or captures from a webcam stream.
-    For this testing phase, it acts as a mock and just returns the source_path.
-    In actual implementation, it uses cv2.VideoCapture or cv2.imread.
+    Reads an image from a file path and saves a copy to the Photo/upload directory.
     """
     print(f"[Stage 1] Acquiring image from {source_path}")
     
-    # Mocking OpenCV imread behavior
-    # raw_frame = cv2.imread(source_path)
-    raw_frame = "MOCK_RAW_FRAME"
+    img = cv2.imread(source_path)
+    if img is None:
+        raise ValueError(f"Cannot read image from {source_path}")
     
-    return raw_frame
+    # Save to Photo/upload/
+    upload_dir = os.path.join("Photo", "upload")
+    os.makedirs(upload_dir, exist_ok=True)
+    
+    filename = os.path.basename(source_path)
+    save_path = os.path.join(upload_dir, filename)
+    cv2.imwrite(save_path, img)
+    
+    return img

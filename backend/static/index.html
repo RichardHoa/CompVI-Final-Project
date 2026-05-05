@@ -12,8 +12,18 @@
         <p>Upload a facial image to discover your personal traits.</p>
         
         <div class="upload-section">
+            <h3>Option 1: Upload an Image</h3>
             <input type="file" id="imageInput" accept="image/*">
             <button id="analyzeBtn">Analyze Image</button>
+        </div>
+
+        <div class="webcam-section" style="margin-top: 20px;">
+            <h3>Option 2: Capture from Webcam</h3>
+            <video id="webcamVideo" autoplay playsinline style="width: 100%; max-width: 400px; display: none;"></video>
+            <canvas id="webcamCanvas" style="display: none;"></canvas>
+            <br>
+            <button id="startWebcamBtn">Start Webcam</button>
+            <button id="captureBtn" style="display: none;">Capture & Analyze</button>
         </div>
 
         <div id="loading" class="hidden">

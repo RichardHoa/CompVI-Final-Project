@@ -19,16 +19,16 @@ def process_image(image_path: str) -> dict:
     processed_frame = preprocess_image(raw_frame)
 
     # Stage 3: Face Detection
-    face_roi = detect_face(processed_frame)
+    face_landmarks = detect_face(processed_frame)
 
-    if not face_roi:
+    if not face_landmarks:
         return {"error": "No face detected in the image."}
 
     # Stage 4: Facial Landmark Detection
-    landmarks = detect_landmarks(processed_frame, face_roi)
+    extracted_data = detect_landmarks(processed_frame, face_landmarks)
 
     # Stage 5: Geometric Feature Extraction
-    features = extract_features(landmarks)
+    features = extract_features(extracted_data)
 
     # Stage 6: Rule-based Feature Interpretation
     interpretation = interpret_features(features)
