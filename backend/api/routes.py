@@ -42,6 +42,8 @@ def analyze_image():
     try:
         # Run the image through the analysis pipeline
         result = process_image(file_location)
+        if isinstance(result, dict) and "error" in result:
+            return jsonify({"error": result["error"]}), 422
         return jsonify({"status": "success", "data": result})
     except Exception as e:
         return jsonify({"error": str(e)}), 500

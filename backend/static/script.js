@@ -58,13 +58,18 @@ async function sendToAnalyze(formData) {
             body: formData
         });
 
-        if (!response.ok) throw new Error(`Error: ${response.statusText}`);
         const data = await response.json();
-        
+
         loadingDiv.classList.add('hidden');
+
+        if (!response.ok || data.error) {
+            alert(data.error || `Server error: ${response.statusText}`);
+            return;
+        }
+
         resultsDiv.classList.remove('hidden');
 
-        if (data.status === "success" || !data.error) {
+        if (data.status === "success") {
             let actualData = data.data || data;
             
             // Render nested features
@@ -97,8 +102,6 @@ async function sendToAnalyze(formData) {
                     });
                 }
             }
-        } else {
-            alert(data.error);
         }
     } catch (error) {
         console.error(error);
