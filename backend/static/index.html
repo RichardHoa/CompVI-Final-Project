@@ -3,53 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Physiognomy Analysis System</title>
+    <title>Physiognomy Analysis</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Physiognomy Analysis</h1>
-        <p>Upload a facial image to discover your personal traits.</p>
-        
-        <div class="upload-section">
-            <h3>Option 1: Upload an Image</h3>
-            <input type="file" id="imageInput" accept="image/*">
-            <button id="analyzeBtn">Analyze Image</button>
-        </div>
 
-        <div class="webcam-section" style="margin-top: 20px;">
-            <h3>Option 2: Capture from Webcam</h3>
-            <video id="webcamVideo" autoplay playsinline style="width: 100%; max-width: 400px; display: none;"></video>
-            <canvas id="webcamCanvas" style="display: none;"></canvas>
-            <br>
-            <button id="startWebcamBtn">Start Webcam</button>
-            <button id="captureBtn" style="display: none;">Capture & Analyze</button>
-        </div>
+    <!-- Upload Panel -->
+    <div id="upload-panel" class="upload-panel">
+        <div class="upload-inner">
+            <h1>Physiognomy Analysis</h1>
+            <p class="subtitle">Upload a portrait photo to receive a detailed facial analysis report.</p>
 
-        <div id="loading" class="hidden">
-            <p>Processing image through the pipeline...</p>
-        </div>
-
-        <div id="results" class="hidden">
-            <h2>Analysis Results</h2>
-            
-            <div class="visualization-section">
-                <h3>Visualized Marking</h3>
-                <img id="visualizedImage" src="" alt="Face Marking" style="max-width: 100%; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-            </div>
-            
-            <div class="features-section">
-                <h3>Extracted Features</h3>
-                <ul id="featuresList"></ul>
-            </div>
-            
-            <div class="interpretation-section">
-                <h3>Interpretations</h3>
-                <ul id="interpretationList"></ul>
+            <div class="input-modes">
+                <div class="mode-box">
+                    <div class="mode-label">Upload Image</div>
+                    <input type="file" id="imageInput" accept=".jpg,.jpeg,.png,.gif,.webp,.bmp,.tiff,.tif">
+                    <button id="analyzeBtn">Analyze</button>
+                </div>
+                <div class="mode-divider">or</div>
+                <div class="mode-box">
+                    <div class="mode-label">Webcam</div>
+                    <video id="webcamVideo" autoplay playsinline></video>
+                    <canvas id="webcamCanvas" style="display:none;"></canvas>
+                    <button id="startWebcamBtn">Start Camera</button>
+                    <button id="captureBtn" style="display:none;">Capture &amp; Analyze</button>
+                </div>
             </div>
         </div>
     </div>
-    
+
+    <!-- Loading -->
+    <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <p>Analyzing your face&hellip;</p>
+    </div>
+
+    <!-- Results: Report Page -->
+    <div id="results" class="hidden">
+        <div class="report-page">
+
+            <!-- Report Title Bar -->
+            <div class="rpt-title-bar">
+                <h1>FACE ANALYSIS REPORT</h1>
+                <p>PORTRAIT-BASED PHYSIOGNOMY ANALYSIS</p>
+            </div>
+
+            <!-- Overview: Photo | Summary | Edge Sketch -->
+            <div class="rpt-overview">
+                <div class="rpt-photo-col">
+                    <img id="visualizedImage" alt="Analyzed face">
+                </div>
+                <div class="rpt-summary-col">
+                    <div class="rpt-col-label">Overview</div>
+                    <div id="overviewItems" class="overview-items"></div>
+                </div>
+                <div class="rpt-sketch-col">
+                    <div class="rpt-col-label">Edge Sketch</div>
+                    <img id="sketchImg" alt="Edge sketch">
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="rpt-actions">
+                <button id="analyzeAgainBtn">← Analyze Another Photo</button>
+            </div>
+
+            <!-- Region: Face Shape -->
+            <div class="rpt-region">
+                <div class="rpt-region-hdr face-hdr">
+                    <span class="region-icon">◇</span>
+                    <span>KHUÔN MẶT <span class="region-sub">· Face Shape</span></span>
+                </div>
+                <div class="rpt-region-body">
+                    <div class="rpt-left">
+                        <img id="faceCropImg" class="crop-img" alt="Face crop">
+                        <div class="col-label">Metrics</div>
+                        <div id="faceMetrics" class="metrics-list"></div>
+                    </div>
+                    <div class="rpt-right">
+                        <div class="col-label">Analysis</div>
+                        <div id="faceInterpDetail" class="interp-detail"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Region: Forehead (placeholder) -->
+            <div class="rpt-region rpt-placeholder">
+                <div class="rpt-region-hdr placeholder-hdr">
+                    <span class="region-icon">—</span>
+                    <span>TRÁN <span class="region-sub">· Forehead</span></span>
+                    <span class="badge-soon">COMING SOON</span>
+                </div>
+                <div class="rpt-region-body">
+                    <div class="placeholder-body">
+                        Detailed forehead analysis will be available in a future update.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Region: Eyes -->
+            <div class="rpt-region">
+                <div class="rpt-region-hdr eye-hdr">
+                    <span class="region-icon">◎</span>
+                    <span>ĐÔI MẮT <span class="region-sub">· Eyes</span></span>
+                </div>
+                <div class="rpt-region-body">
+                    <div class="rpt-left">
+                        <div class="eye-crops">
+                            <div class="crop-wrap">
+                                <img id="leftEyeImg" class="crop-img" alt="Left eye">
+                                <span class="crop-label">Left Eye</span>
+                            </div>
+                            <div class="crop-wrap">
+                                <img id="rightEyeImg" class="crop-img" alt="Right eye">
+                                <span class="crop-label">Right Eye</span>
+                            </div>
+                        </div>
+                        <div class="col-label">Metrics</div>
+                        <div id="eyeMetrics" class="metrics-list"></div>
+                    </div>
+                    <div class="rpt-right">
+                        <div class="col-label">Analysis</div>
+                        <div id="eyeInterpDetail" class="interp-detail"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Region: Nose (placeholder) -->
+            <div class="rpt-region rpt-placeholder">
+                <div class="rpt-region-hdr placeholder-hdr">
+                    <span class="region-icon">—</span>
+                    <span>MŨI <span class="region-sub">· Nose</span></span>
+                    <span class="badge-soon">COMING SOON</span>
+                </div>
+                <div class="rpt-region-body">
+                    <div class="placeholder-body">
+                        Detailed nose analysis will be available in a future update.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Region: Lips -->
+            <div class="rpt-region">
+                <div class="rpt-region-hdr lip-hdr">
+                    <span class="region-icon">♡</span>
+                    <span>ĐÔI MÔI <span class="region-sub">· Lips</span></span>
+                </div>
+                <div class="rpt-region-body">
+                    <div class="rpt-left">
+                        <img id="lipImg" class="crop-img" alt="Lips">
+                        <div class="col-label">Metrics</div>
+                        <div id="lipMetrics" class="metrics-list"></div>
+                    </div>
+                    <div class="rpt-right">
+                        <div class="col-label">Analysis</div>
+                        <div id="lipInterpDetail" class="interp-detail"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Region: Chin (placeholder) -->
+            <div class="rpt-region rpt-placeholder">
+                <div class="rpt-region-hdr placeholder-hdr">
+                    <span class="region-icon">—</span>
+                    <span>HÀM &amp; CẰM <span class="region-sub">· Chin &amp; Jaw</span></span>
+                    <span class="badge-soon">COMING SOON</span>
+                </div>
+                <div class="rpt-region-body">
+                    <div class="placeholder-body">
+                        Detailed chin and jaw analysis will be available in a future update.
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /.report-page -->
+    </div><!-- /#results -->
+
     <script src="/static/script.js"></script>
 </body>
 </html>
