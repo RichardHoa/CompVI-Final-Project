@@ -166,6 +166,12 @@ function renderResults(d) {
         { key: 'confidence',        label: 'Confidence' },
     ]);
     renderInterp('noseInterpDetail', ni);
+
+    /* ── Personality (Gemini) ──────────────────────── */
+    const personalityEl = document.getElementById('personalityDetail');
+    if (personalityEl) {
+        personalityEl.innerText = d.personality || "Không có dữ liệu phân tích tính cách.";
+    }
 }
 
 function renderMetrics(containerId, feats, defs) {

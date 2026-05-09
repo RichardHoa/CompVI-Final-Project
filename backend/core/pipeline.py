@@ -7,6 +7,7 @@ from backend.core.stage3_detection import detect_face
 from backend.core.stage4_landmarks import detect_landmarks
 from backend.core.stage5_features import extract_features
 from backend.core.stage6_interpret import interpret_features
+from backend.core.stage7_personality import get_personality_analysis
 from backend.utils.visualization import visualize_results
 
 STAGES_STATIC_DIR = os.path.join("backend", "static", "stages")
@@ -47,6 +48,7 @@ def process_image(image_path: str) -> dict:
     extracted_data = detect_landmarks(processed_frame, face_landmarks)
     features = extract_features(extracted_data)
     interpretation = interpret_features(features)
+    personality = get_personality_analysis(interpretation)
     visualization_url = visualize_results(processed_frame, extracted_data, features)
 
     stage_images = _copy_stage_images()
@@ -54,6 +56,7 @@ def process_image(image_path: str) -> dict:
     return {
         "features": features,
         "interpretation": interpretation,
+        "personality": personality,
         "visualization_url": visualization_url,
         "stage_images": stage_images,
     }

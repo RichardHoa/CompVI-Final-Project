@@ -266,9 +266,10 @@ button:active { transform: scale(.97); }
 .face-hdr        { background: var(--face); }
 .eye-hdr         { background: var(--eye);  }
 .lip-hdr         { background: var(--lip);  }
+.personality-hdr { background: linear-gradient(90deg, #d97706, #f59e0b); }
 .placeholder-hdr { background: #9ca3af;     }
 
-.badge-soon {
+.badge-soon, .badge-ai {
     margin-left: auto;
     font-size: .58rem;
     letter-spacing: 1.5px;
@@ -291,6 +292,19 @@ button:active { transform: scale(.97); }
     font-size: .86rem;
     font-style: italic;
     background: #f9fafb;
+}
+
+.personality-region .rpt-region-body { grid-template-columns: 1fr; }
+.personality-body {
+    padding: 32px 40px;
+    background: #fffbeb;
+    color: #92400e;
+    font-size: 1.05rem;
+    font-weight: 500;
+    line-height: 1.8;
+    text-align: center;
+    font-style: italic;
+    border-top: 1px solid #fde68a;
 }
 
 /* Inner column label */
