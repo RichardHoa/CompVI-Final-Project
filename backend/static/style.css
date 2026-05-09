@@ -312,13 +312,11 @@ button:active { transform: scale(.97); }
     border-radius: 4px;
     display: block;
     object-fit: cover;
-    max-height: 160px;
     margin-bottom: 14px;
     background: #f3f4f6;
 }
 .eye-crops { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
 .crop-wrap { text-align: center; }
-.crop-wrap .crop-img { max-height: 80px; margin-bottom: 4px; }
 .crop-label { font-size: .68rem; color: var(--muted); }
 
 /* Metrics */

@@ -68,6 +68,63 @@ def extract_features(extracted_data):
     bow_depth = float(p1[1] - min(p2[1], p3[1]))
     
     # ---------------------------
+    # Thirds Features
+    # ---------------------------
+    forehead_center = pt(10)
+    left_brow = pt(105)
+    right_brow = pt(334)
+    brow_center = (left_brow + right_brow) / 2
+    nose_base = pt(2)
+    chin = pt(152)
+
+    forehead_to_brow = abs(brow_center[1] - forehead_center[1])
+    estimated_hairline_y = forehead_center[1] - forehead_to_brow * 1.2
+
+    upper_third = abs(brow_center[1] - estimated_hairline_y)
+    middle_third = abs(nose_base[1] - brow_center[1])
+    lower_third = abs(chin[1] - nose_base[1])
+    total_thirds = upper_third + middle_third + lower_third
+
+    upper_ratio = float(upper_third / total_thirds) if total_thirds > 0 else 0.0
+    middle_ratio = float(middle_third / total_thirds) if total_thirds > 0 else 0.0
+    lower_ratio = float(lower_third / total_thirds) if total_thirds > 0 else 0.0
+
+    ideal = 1 / 3
+    balance_error = abs(upper_ratio - ideal) + abs(middle_ratio - ideal) + abs(lower_ratio - ideal)
+    balance_score = max(0.0, 1.0 - balance_error * 1.5)
+
+    # ---------------------------
+    # Nose Features
+    # ---------------------------
+    landmarks = extracted_data["landmarks"]
+    left_nostril = pt(98)
+    right_nostril = pt(327)
+    nose_tip = pt(1)
+    bridge_upper = pt(168)
+    
+    eye_distance = math.hypot(pt(33)[0] - pt(263)[0], pt(33)[1] - pt(263)[1])
+    nose_width = math.hypot(left_nostril[0] - right_nostril[0], left_nostril[1] - right_nostril[1])
+    nose_length = math.hypot(bridge_upper[0] - nose_tip[0], bridge_upper[1] - nose_tip[1])
+    face_height = math.hypot(pt(10)[0] - pt(152)[0], pt(10)[1] - pt(152)[1])
+
+    width_ratio = float(nose_width / eye_distance) if eye_distance > 0 else 0.0
+    length_ratio = float(nose_length / face_height) if face_height > 0 else 0.0
+    tip_ratio = float(nose_width / nose_length) if nose_length > 0 else 0.0
+
+    bridge_z = landmarks[6].z
+    cheek_avg_z = (landmarks[234].z + landmarks[454].z) / 2
+    bridge_projection = abs(bridge_z - cheek_avg_z)
+
+    nostril_center_y = (left_nostril[1] + right_nostril[1]) / 2
+    tip_offset = nostril_center_y - nose_tip[1]
+
+    # pose error / confidence
+    left_cheek_x = landmarks[234].x
+    right_cheek_x = landmarks[454].x
+    symmetry_pose = abs(left_cheek_x - (1 - right_cheek_x))
+    confidence = max(0.0, 1.0 - symmetry_pose * 8.0)
+
+    # ---------------------------
     # Pack Features
     # ---------------------------
     numeric_features = {
@@ -91,6 +148,20 @@ def extract_features(extracted_data):
             "lip_ratio": lip_ratio,
             "tb_ratio": tb_ratio,
             "bow_depth": bow_depth
+        },
+        "thirds": {
+            "upper_ratio": upper_ratio,
+            "middle_ratio": middle_ratio,
+            "lower_ratio": lower_ratio,
+            "balance_score": balance_score
+        },
+        "nose": {
+            "width_ratio": width_ratio,
+            "length_ratio": length_ratio,
+            "tip_ratio": tip_ratio,
+            "bridge_projection": bridge_projection,
+            "tip_offset": float(tip_offset),
+            "confidence": confidence
         }
     }
     

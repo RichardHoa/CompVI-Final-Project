@@ -91,11 +91,15 @@ function renderResults(d) {
     const fi = interpretation.face || [];
     const ei = interpretation.eye  || [];
     const li = interpretation.lip  || [];
+    const ti = interpretation.thirds || [];
+    const ni = interpretation.nose || [];
 
     const overviewEl = document.getElementById('overviewItems');
     overviewEl.innerHTML = '';
     [
+        { icon: '⚏', cls: 'thirds-icon', region: 'Tỉ Lệ Mặt', primary: ti[ti.length-1], sub: ti.slice(0, -1).join(' · ') },
         { icon: '◇', cls: 'face-icon', region: 'Khuôn Mặt', primary: fi[0], sub: fi.slice(1).join(' · ') },
+        { icon: '△', cls: 'nose-icon', region: 'Mũi', primary: ni[0], sub: ni.slice(1).join(' · ') },
         { icon: '◎', cls: 'eye-icon',  region: 'Đôi Mắt',   primary: ei[0], sub: ei.slice(1).join(' · ') },
         { icon: '♡', cls: 'lip-icon',  region: 'Đôi Môi',   primary: li[0], sub: li.slice(1).join(' · ') },
     ].forEach(r => {
@@ -116,6 +120,7 @@ function renderResults(d) {
     setImg('leftEyeImg',   stageImages['left_eye_crop.png']);
     setImg('rightEyeImg',  stageImages['right_eye_crop.png']);
     setImg('lipImg',       stageImages['lip_crop.png']);
+    setImg('noseImg',      stageImages['nose_crop.png']);
 
     /* ── Face metrics & interpretation ─────────────── */
     renderMetrics('faceMetrics', features.face, [
@@ -142,6 +147,25 @@ function renderResults(d) {
         { key: 'bow_depth', label: 'Cupid bow depth' },
     ]);
     renderInterp('lipInterpDetail', li);
+
+    /* ── Thirds metrics & interpretation ─────────────── */
+    renderMetrics('thirdsMetrics', features.thirds, [
+        { key: 'upper_ratio',   label: 'Upper Face' },
+        { key: 'middle_ratio',  label: 'Middle Face' },
+        { key: 'lower_ratio',   label: 'Lower Face' },
+        { key: 'balance_score', label: 'Balance Score' },
+    ]);
+    renderInterp('thirdsInterpDetail', ti);
+
+    /* ── Nose metrics & interpretation ──────────────── */
+    renderMetrics('noseMetrics', features.nose, [
+        { key: 'width_ratio',       label: 'Width ratio' },
+        { key: 'length_ratio',      label: 'Length ratio' },
+        { key: 'tip_ratio',         label: 'Tip ratio' },
+        { key: 'bridge_projection', label: 'Bridge proj.' },
+        { key: 'confidence',        label: 'Confidence' },
+    ]);
+    renderInterp('noseInterpDetail', ni);
 }
 
 function renderMetrics(containerId, feats, defs) {

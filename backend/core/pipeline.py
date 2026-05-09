@@ -22,6 +22,7 @@ def _copy_stage_images() -> dict:
         (os.path.join("Photo", "extraction", "left_eye_crop.png"), "left_eye_crop.png"),
         (os.path.join("Photo", "extraction", "right_eye_crop.png"),"right_eye_crop.png"),
         (os.path.join("Photo", "extraction", "lip_crop.png"),      "lip_crop.png"),
+        (os.path.join("Photo", "extraction", "nose_crop.png"),     "nose_crop.png"),
     ]
     urls = {}
     for src, name in mappings:

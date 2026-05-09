@@ -6,7 +6,7 @@ def interpret_features(features):
     """
     print("[Stage 6] Interpreting features based on physiognomy rules")
     
-    interpretation = {"face": [], "eye": [], "lip": []}
+    interpretation = {"face": [], "eye": [], "lip": [], "thirds": [], "nose": []}
     
     # ---------------------------
     # Face Interpretation
@@ -87,5 +87,55 @@ def interpret_features(features):
     if bow_depth > 7: interpretation["lip"].append("Môi trái tim / Cupid bow rõ")
     elif bow_depth > 4: interpretation["lip"].append("Cupid bow nhẹ")
     else: interpretation["lip"].append("Viền môi tròn")
+
+    # ---------------------------
+    # Thirds Interpretation
+    # ---------------------------
+    upper_ratio = features["thirds"]["upper_ratio"]
+    middle_ratio = features["thirds"]["middle_ratio"]
+    lower_ratio = features["thirds"]["lower_ratio"]
+    balance_score = features["thirds"]["balance_score"]
+    
+    def classify_third(ratio, name):
+        if ratio > 0.38: return f"{name} hơi dài"
+        elif ratio < 0.28: return f"{name} hơi ngắn"
+        else: return f"{name} cân đối"
+        
+    interpretation["thirds"].append(classify_third(upper_ratio, "Thượng đình"))
+    interpretation["thirds"].append(classify_third(middle_ratio, "Trung đình"))
+    interpretation["thirds"].append(classify_third(lower_ratio, "Hạ đình"))
+    
+    if balance_score > 0.82: interpretation["thirds"].append("Tỉ lệ gương mặt khá cân đối")
+    elif balance_score > 0.68: interpretation["thirds"].append("Tỉ lệ gương mặt tương đối hài hòa")
+    else: interpretation["thirds"].append("Tỉ lệ gương mặt hơi lệch nhẹ")
+
+    # ---------------------------
+    # Nose Interpretation
+    # ---------------------------
+    width_ratio = features["nose"]["width_ratio"]
+    length_ratio = features["nose"]["length_ratio"]
+    tip_ratio = features["nose"]["tip_ratio"]
+    bridge_projection = features["nose"]["bridge_projection"]
+    tip_offset = features["nose"]["tip_offset"]
+    
+    if width_ratio > 0.44: interpretation["nose"].append("Cánh mũi hơi rộng")
+    elif width_ratio > 0.35: interpretation["nose"].append("Cánh mũi cân đối")
+    else: interpretation["nose"].append("Cánh mũi nhỏ")
+    
+    if length_ratio > 0.34: interpretation["nose"].append("Mũi hơi dài")
+    elif length_ratio > 0.24: interpretation["nose"].append("Mũi trung bình")
+    else: interpretation["nose"].append("Mũi hơi ngắn")
+    
+    if tip_ratio > 0.95: interpretation["nose"].append("Đầu mũi tròn mềm")
+    elif tip_ratio > 0.78: interpretation["nose"].append("Đầu mũi cân đối")
+    else: interpretation["nose"].append("Đầu mũi gọn nhẹ")
+    
+    if tip_offset > 10: interpretation["nose"].append("Hơi hướng lên nhẹ")
+    elif tip_offset < -10: interpretation["nose"].append("Hơi hướng xuống")
+    else: interpretation["nose"].append("Neutral / thẳng")
+    
+    if bridge_projection > 0.13: interpretation["nose"].append("Sống mũi nổi khá rõ")
+    elif bridge_projection > 0.07: interpretation["nose"].append("Sống mũi tự nhiên")
+    else: interpretation["nose"].append("Sống mũi mềm nhẹ")
 
     return interpretation

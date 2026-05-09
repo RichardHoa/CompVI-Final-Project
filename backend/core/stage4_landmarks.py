@@ -50,11 +50,13 @@ def detect_landmarks(processed_frame, face_landmarks):
         61,146,91,181,84,17,314,405,321,375,291,
         0,37,39,40,185,267,269,270,409
     ]
+    NOSE = [1, 2, 6, 98, 327, 168, 197, 195, 5, 4]
     
     face_crops = crop_from_points(FACE_POINTS, pad=15)
     left_eye_crops = crop_from_points(LEFT_EYE, pad=5)
     right_eye_crops = crop_from_points(RIGHT_EYE, pad=5)
     lip_crops = crop_from_points(LIPS, pad=10)
+    nose_crops = crop_from_points(NOSE, pad=15)
     
     extraction_dir = os.path.join("Photo", "extraction")
     os.makedirs(extraction_dir, exist_ok=True)
@@ -63,6 +65,7 @@ def detect_landmarks(processed_frame, face_landmarks):
     cv2.imwrite(os.path.join(extraction_dir, "left_eye_crop.png"), left_eye_crops[0])
     cv2.imwrite(os.path.join(extraction_dir, "right_eye_crop.png"), right_eye_crops[0])
     cv2.imwrite(os.path.join(extraction_dir, "lip_crop.png"), lip_crops[0])
+    cv2.imwrite(os.path.join(extraction_dir, "nose_crop.png"), nose_crops[0])
     
     extracted_data = {
         "landmarks": face_landmarks,
@@ -70,6 +73,7 @@ def detect_landmarks(processed_frame, face_landmarks):
         "left_eye": left_eye_crops,
         "right_eye": right_eye_crops,
         "lips": lip_crops,
+        "nose": nose_crops,
         "pt_func": pt
     }
     
