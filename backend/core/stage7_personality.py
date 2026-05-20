@@ -27,16 +27,16 @@ def get_personality_analysis(interpretation):
                 features_summary.append(f"- {category.capitalize()}: {', '.join(traits)}")
         
         prompt = f"""
-Bạn là một chuyên gia nhân tướng học (physiognomy expert). Dựa trên các đặc điểm diện mạo sau đây của một người:
+You are a physiognomy expert. Based on the following facial features of a person:
 
 {os.linesep.join(features_summary)}
 
-Hãy đưa ra đúng 3 câu nhận xét về tính cách của người này. 
-Yêu cầu:
-1. Chỉ tập trung vào những điểm mạnh, điểm tốt và tiềm năng tích cực trong tính cách.
-2. Tuyệt đối không nhắc đến bất kỳ điểm yếu, điểm xấu hay khía cạnh tiêu cực nào.
-3. Văn phong trang trọng, tinh tế và mang tính khích lệ.
-4. Trình bày dưới dạng 3 câu văn liên tiếp, không đánh số.
+Please provide exactly 3 sentences describing this person's personality.
+Requirements:
+1. Focus only on the strengths, positive traits, and encouraging potential in their personality.
+2. Absolutely do not mention any weaknesses, flaws, or negative aspects.
+3. The tone should be formal, refined, and encouraging.
+4. Present the analysis as exactly 3 consecutive sentences, without numbering.
 """
         
         response = client.models.generate_content(
@@ -47,8 +47,8 @@ Yêu cầu:
         if response and response.text:
             return response.text.strip()
         else:
-            return "Không thể tạo phân tích tính cách lúc này."
+            return "Could not generate personality analysis at this moment."
             
     except Exception as e:
         print(f"[Stage 7] Error calling Gemini API: {str(e)}")
-        return f"Phân tích tính cách tạm thời không khả dụng."
+        return f"Personality analysis is temporarily unavailable."

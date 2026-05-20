@@ -97,11 +97,11 @@ function renderResults(d) {
     const overviewEl = document.getElementById('overviewItems');
     overviewEl.innerHTML = '';
     [
-        { icon: '⚏', cls: 'thirds-icon', region: 'Tỉ Lệ Mặt', primary: ti[ti.length-1], sub: ti.slice(0, -1).join(' · ') },
-        { icon: '◇', cls: 'face-icon', region: 'Khuôn Mặt', primary: fi[0], sub: fi.slice(1).join(' · ') },
-        { icon: '△', cls: 'nose-icon', region: 'Mũi', primary: ni[0], sub: ni.slice(1).join(' · ') },
-        { icon: '◎', cls: 'eye-icon',  region: 'Đôi Mắt',   primary: ei[0], sub: ei.slice(1).join(' · ') },
-        { icon: '♡', cls: 'lip-icon',  region: 'Đôi Môi',   primary: li[0], sub: li.slice(1).join(' · ') },
+        { icon: '⚏', cls: 'thirds-icon', region: 'Facial Thirds', primary: ti[ti.length-1], sub: ti.slice(0, -1).join(' · ') },
+        { icon: '◇', cls: 'face-icon', region: 'Face Shape', primary: fi[0], sub: fi.slice(1).join(' · ') },
+        { icon: '△', cls: 'nose-icon', region: 'Nose', primary: ni[0], sub: ni.slice(1).join(' · ') },
+        { icon: '◎', cls: 'eye-icon',  region: 'Eyes',   primary: ei[0], sub: ei.slice(1).join(' · ') },
+        { icon: '♡', cls: 'lip-icon',  region: 'Lips',   primary: li[0], sub: li.slice(1).join(' · ') },
     ].forEach(r => {
         const row = document.createElement('div');
         row.className = 'overview-row';
@@ -170,7 +170,7 @@ function renderResults(d) {
     /* ── Personality (Gemini) ──────────────────────── */
     const personalityEl = document.getElementById('personalityDetail');
     if (personalityEl) {
-        personalityEl.innerText = d.personality || "Không có dữ liệu phân tích tính cách.";
+        personalityEl.innerText = d.personality || "No personality analysis data available.";
     }
 }
 
